@@ -1,36 +1,27 @@
 import random
 import pickle
-import os
 from datetime import date
 
 
+class Rotor:
+    def __init__(self):
+        self.letters = ''
+        for i in range(0, 255):
+            self.letters += chr(i)
+
+        self.rotor_value = list(self.letters)
+        random.shuffle(self.rotor_value)
+        self.data = ''.join(self.rotor_value)
+
+
 def __main__():
-    letters = ''
-    for i in range(0, 255):
-        letters += chr(i)
     today = date.today()
     random.seed(str(today))
+    rotors = [Rotor().data for _ in range(3)]
 
-    r1 = list(letters)
-    random.shuffle(r1)
-    r1 = ''.join(r1)
-
-    r2 = list(letters)
-    random.shuffle(r2)
-    r2 = ''.join(r2)
-
-    r3 = list(letters)
-    random.shuffle(r3)
-    r3 = ''.join(r3)
-
-    if os.path.isfile('rotors'):
-        os.remove('rotors')
-    f = open('rotors', 'xb')
-    pickle.dump((r1, r2, r3), f)
-    f.close()
+    with open("rotors", "wb") as rotors_file:
+        pickle.dump(tuple(rotors), rotors_file)
 
 
 if __main__ is not None:
     __main__()
-
-
